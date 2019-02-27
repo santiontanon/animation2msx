@@ -12,6 +12,8 @@ The way the program works is by figuring out all the different tiles needed in e
 
 Note: color conversion is not very good in the tool, so, I recommend processing the GIF file manually to get it into an MSX-style palette first.
 
+Note 2: if the animation is complex and there are lots of tiles, the execution of k-medoids can be slow! For example, it takes about 15 minutes to complete in my laptop for the cube1.gif example. Flag.gif just takes a couple of seconds, however, since its a much simpler animation.
+
 # limitations
 
 - Assumes MSX screen 2 (256x192 pixels, 16 colors)
