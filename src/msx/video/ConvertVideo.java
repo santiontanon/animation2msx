@@ -312,7 +312,7 @@ public class ConvertVideo {
                            "         black and white, use -ua 0,15");
         System.out.println("");
         System.out.println("Example:");
-        System.out.println("    java -jar MSXVideoConverter.jar examples/flag.gif examples/flag -p examples/msxpalette.tsv");        
+        System.out.println("    java -cp lib/glass-0.5.jar:MSXVideoConverter.jar msx.video.ConvertVideo examples/flag.gif examples/flag -p examples/msxpalette.tsv"); 
     }
     
     
