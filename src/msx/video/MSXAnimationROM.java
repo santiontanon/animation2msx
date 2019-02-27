@@ -89,9 +89,9 @@ public class MSXAnimationROM {
                     fw.write("    db ");
                     for(int j = 0;j<width;j++) {
                         if (j==0) {
-                            fw.write(""+(nameTables.get(frame)[i*32+j]+config.startingTile));
+                            fw.write(""+(nameTables.get(frame)[i*width+j]+config.startingTile));
                         } else {
-                            fw.write(", "+(nameTables.get(frame)[i*32+j]+config.startingTile));
+                            fw.write(", "+(nameTables.get(frame)[i*width+j]+config.startingTile));
                         }
                     }
                     fw.write("\n");
