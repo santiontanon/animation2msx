@@ -31,7 +31,7 @@ Options:
 - -s "stride": by default, all the frames in the gif file will be used. However, some gif files are long. So, you can specify if you want to skip frames. By default, the stride is set to 1 (use every frame), but you can set it to 2 (skip every other frame), 3, etc. Also, notice that if the video has more than 16 frames, the demo ROM will not work, since the nameTables will not fit in memory.
 - -nw: ignore the number of times each tile appears in the video during clustering.
 - -sa x1,y1,x2,y2: source area to capture from the gif (default is the whole screen.
-- -ta x1,y1,x2,y2: target area of the MSX screen (default is 0,0,256,192)
+- -ta x1,y1,x2,y2: target area of the MSX screen (default is 0,0,256,192). Notice that if you specify a smaller area, the video demo ROM might display grabage in the rest of the screen.
 - -c c1,c2: generate the animation using only two colors (c1,c2) for the whole animation. This saves space in the ROM, since we do not need to store the attributes table of the tiles. For example, to generate an animation in black and white, use -ua 0,15
 
 Examples:
