@@ -12,12 +12,12 @@ The way the program works is by figuring out all the different tiles needed in e
 
 Note: color conversion is not very good in the tool, so, I recommend processing the GIF file manually to get it into an MSX-style palette first.
 
-Note 2: if the animation is complex and there are lots of tiles, the execution of k-medoids can be slow! For example, it takes about 15 minutes to complete in my laptop for the cube1.gif example. Flag.gif just takes a couple of seconds, however, since its a much simpler animation.
+Note 2: if the animation is complex and there are lots of tiles, the execution of k-medoids can be slow! Flag.gif just takes a couple of seconds on my laptop since its a simple animation, but other animatinos might take longer (I've seen a few taking up to 15 minutes).
 
 # limitations
 
 - Assumes MSX screen 2 (256x192 pixels, 16 colors)
-- Color conversion is very simple (nearest neighbor to the MSX1 color palette). If you want to do better color conversion, adjust the color of the input GIF first with your favorite image editing tool, and then pass it through this tool to convert it to MSX
+- Color conversion is very simple (nearest neighbor to the MSX1 color palette). If you want to do better color conversion, adjust the color of the input GIF first with your favorite image editing tool, and then pass it through this tool to convert it to MSXFor
 - The demo ROM will break if the animation name tables use more than about 12KB (this is enough for about 16 frames if the video is full screen, and more if the video is smaller).
 
 # usage as a command line tool:
