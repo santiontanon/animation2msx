@@ -37,7 +37,7 @@ Options:
 - -c c1,c2: generate the animation using only two colors (c1,c2) for the whole animation. This saves space in the ROM, since we do not need to store the attributes table of the tiles. For example, to generate an animation in black and white, use -ua 0,15
 
 Examples of how to call it from the command line:
-- java -cp lib/glass-0.5.jar:animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag
-- java -cp lib/glass-0.5.jar:animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag -p examples/msxpalette.tsv
-- java -cp lib/glass-0.5.jar:animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag -d 2 -r 112-255 -sa 0,0,256,184 -ta 0,0,256,184 -c 0,15   <-- this is to generate the flag animation exactly as it is in XRacing (the original XRacing used a slightly worse version of this algorithm (with the -nw option set).
+- java -cp lib/glass-0.5.jar:lib/animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag
+- java -cp lib/glass-0.5.jar:lib/animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag -p examples/msxpalette.tsv
+- java -cp lib/glass-0.5.jar:lib/animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag -d 2 -r 112-255 -sa 0,0,256,184 -ta 0,0,256,184 -c 0,15   <-- this is to generate the flag animation exactly as it is in XRacing (the original XRacing used a slightly worse version of this algorithm (with the -nw option set).
 
