@@ -189,10 +189,16 @@ public class ConvertVideo {
         if (args.length > 1 && !optionPrefixes.contains(args[1])) {
             // output folder is specified:
             config.outputFolder = args[1];
+            // just in case folders are passed using Unix-style, but we are not on Unix
+            // (this happens if they copy/paste the examples in the web)
+            config.outputFolder = config.outputFolder.replace('/', File.separatorChar);
             if (!config.outputFolder.endsWith(File.separator)) config.outputFolder += File.separator;
             firstOptionParameter = 2;
         } else {
             // use the same folder as the input file:
+            // just in case folders are passed using Unix-style, but we are not on Unix
+            // (this happens if they copy/paste the examples in the web)
+            config.inputGifFileName = config.inputGifFileName.replace('/', File.separatorChar);
             int idx = config.inputGifFileName.lastIndexOf(File.separator);
             if (idx == -1) {
                 config.outputFolder = "." + File.separator;
@@ -295,7 +301,7 @@ public class ConvertVideo {
                            "            of the 3 banks will be used. However, if a smaller range is desired, this\n" +
                            "            can be specified with the -tr option. For example -tr 32-127 would force the\n" +
                            "            program to only use tiles from 32-127 (96 tiles).");
-        System.out.println("    -d [delay]: the number of halt instructions between animation frames in the" +
+        System.out.println("    -d [delay]: the number of halt instructions between animation frames in the\n" +
                            "            generated rom file. The default is 2");
         System.out.println("    -s [stride]: by default, all the frames in the gif file will be used. However,\n" +
                            "            some gif files are long. So, you can specify if you want to skip frames.\n" +
