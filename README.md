@@ -41,4 +41,4 @@ Examples of how to call it from the command line:
 - java -cp lib/glass-0.5.jar:lib/animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag -p examples/msxpalette.tsv
 - java -cp lib/glass-0.5.jar:lib/animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag -d 2 -r 112-255 -sa 0,0,256,184 -ta 0,0,256,184 -c 0,15   <-- this is to generate the flag animation exactly as it is in XRacing (the original XRacing used a slightly worse version of this algorithm (with the -nw option set).
 
-**For Windows users**: make sure to replace ":" by ";" as the class path separator character. So, it should be "-cp lib/glass-0.5.jar;lib/animation2msx.jar" instead of "-cp lib/glass-0.5.jar:lib/animation2msx.jar" in the commands above.
+**For Windows users**: make sure to replace ":" by ";" as the class path separator character, and "/" by "\" as directory separator. So, it should be "-cp lib\glass-0.5.jar;lib\animation2msx.jar" instead of "-cp lib/glass-0.5.jar:lib/animation2msx.jar", and "examples\flag" instead of "examples/flag in the commands above.
