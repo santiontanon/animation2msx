@@ -30,9 +30,9 @@ public class EightBitConverter {
     public static int G_SHIFT = 8;
     public static int B_SHIFT = 0;
     
-    
-    public static EightBitConverter getMSXConverter() {
-        int MSX1Palette[][] = { {0,0,0},
+    /*
+    public static int MSX1Palette[][] = {
+                                {0,0,0},
                                 {0,0,0},
                                 {43,221,81},
                                 {100,255,118},
@@ -47,7 +47,29 @@ public class EightBitConverter {
                                 {43,187,43},
                                 {221,81,187},
                                 {221,221,221},
-                                {255,255,255}};        
+                                {255,255,255}};     
+    */
+    
+    public static int MSX1Palette[][]={
+                                {0,0,0},              // Transparent
+                                {0,0,0},              // Black
+                                {36,219,36},          // Medium Green
+                                {109,255,109},        // Light Green
+                                {36,36,255},          // Dark Blue
+                                {73,109,255},         // Light Blue
+                                {182,36,36},          // Dark Red
+                                {73,219,255},         // Cyan
+                                {255,36,36},          // Medium Red
+                                {255,109,109},        // Light Red
+                                {219,219,36},         // Dark Yellow
+                                {219,219,146},        // Light Yellow
+                                {36,146,36},          // Dark Green
+                                {219,73,182},         // Magenta
+                                {182,182,182},        // Grey
+                                {255,255,255}};       // White        
+    
+    
+    public static EightBitConverter getMSXConverter() {      
         return new EightBitConverter(MSX1Palette, 2, 8, 1);
     }    
         

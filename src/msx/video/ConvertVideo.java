@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
+import msx.tools.CIEDE2000;
 import msx.tools.EightBitConverter;
 import msx.tools.KMedoids;
 import msx.tools.MSXTile;
@@ -28,9 +28,6 @@ import org.w3c.dom.NodeList;
 /**
  *
  * @author santi
- * 
- * TODO:
- * - Upload to GitHub and use it to update the XRacing build!
  * 
  */
 public class ConvertVideo {
@@ -48,6 +45,7 @@ public class ConvertVideo {
         int uniformAttributes[] = null;
         int sourceRegion[] = null;
         int targetRegion[] = {0,0,256,192};
+        boolean useCIEDE2000 = false;
     };
     
     
@@ -87,6 +85,7 @@ public class ConvertVideo {
             config.sourceRegion = new int[]{0, 0, frames.get(0).getWidth(), frames.get(0).getHeight()};
         }
         
+        // Convert them to MSX:
         List<BufferedImage> frames2 = new ArrayList<>();
         for(int i = 0;i<frames.size();i+=config.frameStride) {
             BufferedImage img = new BufferedImage(256, 192, BufferedImage.TYPE_INT_ARGB);
@@ -94,9 +93,15 @@ public class ConvertVideo {
                                         config.targetRegion[0], config.targetRegion[1],
                                         config.targetRegion[2], config.targetRegion[3],
                                         config.sourceRegion[0], config.sourceRegion[1],
-                                        config.sourceRegion[2], config.sourceRegion[3], null);                    
-            BufferedImage img2 = converter.convertImage(img);
-            frames2.add(img2);
+                                        config.sourceRegion[2], config.sourceRegion[3], null);
+            if (config.useCIEDE2000) {
+                System.out.println("Converting frame " + i + " with CIEDE2000...");
+                BufferedImage img2 = CIEDE2000.convertImage(img, converter.palette);
+                frames2.add(img2);
+            } else {
+                BufferedImage img2 = converter.convertImage(img);
+                frames2.add(img2);
+            }
         }
         frames = frames2;
         
@@ -178,6 +183,7 @@ public class ConvertVideo {
         optionPrefixes.add("-sa");
         optionPrefixes.add("-ta");
         optionPrefixes.add("-c");
+        optionPrefixes.add("-ciede2000");
         int firstOptionParameter = 1;
         Configuration config = new Configuration();
         
@@ -273,6 +279,12 @@ public class ConvertVideo {
                         firstOptionParameter+=2;
                     }
                     break;
+                case 8: // -ciede2000
+                    {
+                        config.useCIEDE2000 = true;
+                        firstOptionParameter++;
+                    }
+                    break;
                 default:
                     return null;
             }
@@ -316,6 +328,7 @@ public class ConvertVideo {
                            "         whole animation. This saves space in the ROM, since we do not need to store\n" +
                            "         the attributes table of the tiles. For example, to generate an animation in\n"+
                            "         black and white, use -ua 0,15");
+        System.out.println("    -ciede2000: use the CIEDE2000 algortithm to convert images to the MSX palette.");
         System.out.println("");
         System.out.println("Example:");
         System.out.println("    java -cp lib/glass-0.5.jar:animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag -p examples/msxpalette.tsv"); 
@@ -358,7 +371,9 @@ public class ConvertVideo {
         BufferedImage master = null;
         BufferedImage currentFrame = null;
 
+        BufferedImage previousFrame = null;
         for (int i = 0; i < noi; i++) { 
+            boolean dispose = true;
             BufferedImage image = reader.read(i);
             IIOMetadata metadata = reader.getImageMetadata(i);
 
@@ -369,23 +384,42 @@ public class ConvertVideo {
             for (int j = 0; j < children.getLength(); j++) {
                 Node nodeItem = children.item(j);
 
+                // System.out.println(nodeItem.getNodeName());
                 if(nodeItem.getNodeName().equals("ImageDescriptor")){
                     Map<String, Integer> imageAttr = new HashMap<>();
 
                     for (int k = 0; k < imageatt.length; k++) {
                         NamedNodeMap attr = nodeItem.getAttributes();
                         Node attnode = attr.getNamedItem(imageatt[k]);
-                        imageAttr.put(imageatt[k], Integer.valueOf(attnode.getNodeValue()));
+                        // imageAttr.put(imageatt[k], Integer.valueOf(attnode.getNodeValue()));
+                        imageAttr.put(imageatt[k], Integer.parseInt(attnode.getNodeValue()));
+                        // System.out.println("  " + imageatt[k] + " = " + attnode.getNodeValue());
                     }
                     if(master == null) {
-                        master = new BufferedImage(imageAttr.get("imageWidth"), imageAttr.get("imageHeight"), BufferedImage.TYPE_INT_ARGB);
+                        if (previousFrame == null) {
+                            master = new BufferedImage(imageAttr.get("imageWidth"), imageAttr.get("imageHeight"), BufferedImage.TYPE_INT_ARGB);
+                        } else {
+                            master = new BufferedImage(previousFrame.getWidth(), previousFrame.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                        }
                     }
                     master.getGraphics().drawImage(image, imageAttr.get("imageLeftPosition"), imageAttr.get("imageTopPosition"), null);
+                } else if (nodeItem.getNodeName().equals("GraphicControlExtension")) {
+                    NamedNodeMap attr = nodeItem.getAttributes();
+                    Node attnode = attr.getNamedItem("disposalMethod");
+                    if (attnode != null) {
+                        if (attnode.getNodeValue().equals("doNotDispose")) {
+                            dispose = false;
+                        }
+                    }
                 }
             }
             currentFrame = new BufferedImage(master.getWidth(), master.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            if (!dispose) {
+                currentFrame.getGraphics().drawImage(previousFrame, 0, 0, null);
+            }
             currentFrame.getGraphics().drawImage(master, 0, 0, null);
             frames.add(currentFrame);
+            previousFrame = currentFrame;
         }
 
         return frames;
