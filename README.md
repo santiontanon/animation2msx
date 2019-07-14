@@ -35,6 +35,7 @@ Options:
 - -sa x1,y1,x2,y2: source area to capture from the gif (default is the whole screen.
 - -ta x1,y1,x2,y2: target area of the MSX screen (default is 0,0,256,192). Notice that if you specify a smaller area, the video demo ROM might display grabage in the rest of the screen.
 - -c c1,c2: generate the animation using only two colors (c1,c2) for the whole animation. This saves space in the ROM, since we do not need to store the attributes table of the tiles. For example, to generate an animation in black and white, use -ua 0,15
+- -ciede2000: use the CIEDE2000 algortithm to convert images to the MSX palette (this produces much better quality output, but is a much slower conversion method).
 
 Examples of how to call it from the command line:
 - java -cp lib/glass-0.5.jar:lib/animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag
@@ -42,3 +43,7 @@ Examples of how to call it from the command line:
 - java -cp lib/glass-0.5.jar:lib/animation2msx.jar msx.video.ConvertVideo examples/flag.gif examples/flag -d 2 -r 112-255 -sa 0,0,256,184 -ta 0,0,256,184 -c 0,15   <-- this is to generate the flag animation exactly as it is in XRacing (the original XRacing used a slightly worse version of this algorithm (with the -nw option set).
 
 **For Windows users**: make sure to replace ":" by ";" as the class path separator character, and "/" by "\" as directory separator. So, it should be "-cp lib\glass-0.5.jar;lib\animation2msx.jar" instead of "-cp lib/glass-0.5.jar:lib/animation2msx.jar", and "examples\flag" instead of "examples/flag in the commands above.
+
+# Acknowledgements
+
+The CIEDE2000 algorithm was adapted from Eric Boez's C version ( https://github.com/ericb59/graphxconv/tree/master/MSX1%20Graphic%20Converter ), which in itself was adapted from Leandro Correira's version ( https://pastebin.com/1nThpe7j ). Leandro brought this algorithm to the attention to the MSX community in this forum thread, in which you can find more information about it: https://www.msx.org/forum/msx-talk/development/graphic-conversion-for-any-256x192-into-msx1-graphics-source-code-in-blit
