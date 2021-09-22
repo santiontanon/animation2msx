@@ -2,6 +2,8 @@
 
 A small Java tool to convert short animation loops to be played on MSX computers. This is the code that was used to generate the flag animation in the game XRacing ( https://github.com/santiontanon/xracing ).
 
+You can see a Youtube video of it working here: https://www.youtube.com/watch?v=BL92Ri0-N_U
+
 The input is a GIF file, and the output is a collection of .asm file with the data necessary to play the animation. The data is divded into 2 parts:
 - Tiles/attributes: to be copied to each of the three banks of the VDP (the converted assumes MSX1 with Screen 2).
 - Name tables: the name tables of each of the animation frames, to be copied to the VDP at each frame. 
